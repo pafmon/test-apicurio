@@ -1,0 +1,112 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API for managing votes on talks",
+    "version": "1.0.0",
+    "title": "TalkVote API",
+    "contact": {
+      "email": "pafmon@gmail.com"
+    }
+  },
+  "basePath": "/api/v1",
+  "paths": {
+    "/{talkId}/votes": {
+      "x-swagger-router-controller": "votes",
+      "post": {
+        "summary": "Register a new vote for a talk",
+        "operationId": "registerVote",
+        "responses": {
+          "405": {
+            "description": "Invalid vote"
+          }
+        },
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "talkId",
+            "description": "Talk Id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "vote",
+            "description": "Vote to be registered",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 10
+            }
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete all votes of a talk",
+        "operationId": "deleteVotes",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "talkId",
+            "description": "Talk Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/{talkId}/votes/results": {
+      "x-swagger-router-controller": "votes",
+      "get": {
+        "summary": "Obtain a the results of a talk vote",
+        "operationId": "getResults",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "talkId",
+            "description": "Talk Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "description": "Total count of votes",
+                    "example": 15,
+                    "type": "number"
+                  },
+                  "average": {
+                    "description": "Average vote",
+                    "example": 8,
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
